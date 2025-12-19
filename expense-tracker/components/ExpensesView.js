@@ -117,6 +117,51 @@ export default function ExpensesView({ user }) {
         }
     }
 
+    function handleExportCSV() {
+        if (!expenses || expenses.length === 0) {
+            alert("No transactions to export for this period.");
+            return;
+        }
+
+        const headers = ['Date', 'Item', 'Amount', 'Category', 'Type'];
+
+        const rows = expenses.map(ex => [
+            ex.expense_date,
+            ex.item,
+            ex.amount,
+            ex.category,
+            ex.type,
+        ]);
+
+        const escapeCSV = (value) => {
+            if (value === null || value === undefined) return '';
+            const str = String(value);
+            if (/[",\n]/.test(str)) {
+                return `"${str.replace(/"/g, '""')}"`;
+            }
+            return str;
+        };
+
+        const csvContent = [
+            headers.map(escapeCSV).join(','),
+            ...rows.map(row => row.map(escapeCSV).join(',')),
+        ].join('\n');
+
+        const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+        const url = URL.createObjectURL(blob);
+
+        const monthName = format(new Date(year, month - 1, 1), 'yyyy-MM');
+        const fileName = `expenses-${monthName}.csv`;
+
+        const link = document.createElement('a');
+        link.href = url;
+        link.setAttribute('download', fileName);
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+        URL.revokeObjectURL(url);
+    }
+
     async function handleDelete(id) {
         if (!confirm("Delete this transaction?")) return;
         await supabase.from('expenses').delete().eq('id', id);
@@ -186,7 +231,15 @@ export default function ExpensesView({ user }) {
                         </div>
 
                         <div className="pro-card p-6 lg:col-span-2 flex flex-col h-[500px]">
-                            <div className="border-b pb-2 mb-4"><h3 className="font-bold text-lg">History</h3></div>
+                            <div className="border-b pb-2 mb-4 flex items-center justify-between gap-3">
+                                <h3 className="font-bold text-lg">History</h3>
+                                <button
+                                    onClick={handleExportCSV}
+                                    className="inline-flex items-center gap-2 text-xs md:text-sm px-3 py-1.5 rounded-full border border-slate-200 text-slate-600 hover:bg-slate-50 hover:text-slate-900 transition"
+                                >
+                                    Export CSV
+                                </button>
+                            </div>
                             <div className="flex-1 overflow-y-auto space-y-3 pr-2 scrollbar-thin scrollbar-thumb-slate-200">
                                 {expenses.length === 0 ? <p className="text-center text-slate-400 mt-10">No transactions found.</p> : null}
                                 {expenses.map(ex => (
