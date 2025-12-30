@@ -273,6 +273,7 @@ export default function MarriageView({ user }) {
             {/* DETAILED LIST */}
             <div className="pro-card p-6">
                 <h3 className="font-bold text-lg mb-4 text-slate-700">Transaction Log</h3>
+                <div className="overflow-x-auto rounded-lg border border-slate-200"></div>
                 <table className="w-full text-sm text-left">
                     <thead className="bg-slate-50 text-slate-500 font-bold">
                         <tr><th className="p-3">Date</th><th className="p-3">User</th><th className="p-3">Note</th><th className="p-3 text-right">Amount</th><th className="p-3"></th></tr>

@@ -200,7 +200,7 @@ export default function ExpensesView({ user }) {
                         {/* LIST */}
                         <div className="pro-card p-6 lg:col-span-2 flex flex-col h-[500px]">
                             <div className="border-b pb-2 mb-4"><h3 className="font-bold text-lg">History</h3></div>
-                            <div className="flex-1 overflow-y-auto space-y-3 pr-2 scrollbar-thin scrollbar-thumb-slate-200">
+                            <div className="flex-1 overflow-y-auto overflow-x-hidden space-y-3 pr-2 scrollbar-thin scrollbar-thumb-slate-200">
                                 {expenses.length === 0 ? <p className="text-center text-slate-400 mt-10">No transactions found.</p> : null}
                                 {expenses.map(ex => (
                                     <div key={ex.id} className="group flex justify-between items-center p-3 hover:bg-slate-50 rounded-lg border border-transparent hover:border-slate-100 transition">
