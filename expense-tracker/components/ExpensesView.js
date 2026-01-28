@@ -184,7 +184,7 @@ export default function ExpensesView({ user }) {
                             <div className="space-y-3">
                                 <div className="flex gap-2 p-1 bg-slate-100 rounded-lg">
                                     {['Expense', 'Income'].map(type => (
-                                        <button key={type} onClick={() => setNewItem({ ...newItem, type })} className={`flex-1 py-1.5 text-sm rounded-md font-medium transition ${newItem.type === type ? 'bg-white shadow text-slate-900' : 'text-slate-500'}`}>{type}</button>
+                                        <button key={type} onClick={() => setNewItem({ ...newItem, type, category: type === 'Expense' ? 'Food' : 'Salary' })} className={`flex-1 py-1.5 text-sm rounded-md font-medium transition ${newItem.type === type ? 'bg-white shadow text-slate-900' : 'text-slate-500'}`}>{type}</button>
                                     ))}
                                 </div>
                                 <input type="date" value={newItem.date} onChange={e => setNewItem({ ...newItem, date: e.target.value })} className="w-full border rounded-lg p-2.5 text-sm" />
